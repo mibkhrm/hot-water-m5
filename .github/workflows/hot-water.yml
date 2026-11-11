@@ -6,6 +6,9 @@ on:
     - cron: "*/10 1-17 * * *"
     - cron: "0 18 * * *"
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["check_hot_water.py", ".github/workflows/**"]
 
 permissions:
   contents: write
@@ -29,7 +32,7 @@ jobs:
         env:
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
           HOSTEL: M5
-        run: python check_hot_water.py ${{ github.event_name == 'workflow_dispatch' && '--force' || '' }}
+        run: python check_hot_water.py ${{ github.event_name != 'schedule' && '--force' || '' }}
 
       - name: Save state
         run: |
