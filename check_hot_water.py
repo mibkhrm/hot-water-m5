@@ -75,6 +75,9 @@ def load_state():
 def main():
     args = set(sys.argv[1:])
 
+    if os.environ.get("GITHUB_ACTIONS") and not NTFY_TOPIC:
+        sys.exit("NTFY_TOPIC secret is missing - add it in repo Settings > Secrets and variables > Actions")
+
     if "--test" in args:
         notify(f"{HOSTEL} hot water alerts", "Test notification - your phone is set up!", tags=["white_check_mark"])
         return
